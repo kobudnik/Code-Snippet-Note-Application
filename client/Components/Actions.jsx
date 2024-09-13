@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../Providers/DataProvider';
+import { sleep } from '../utils/sleep';
 
 function Actions() {
   const {
@@ -13,6 +14,7 @@ function Actions() {
     setUpdatedSnip,
   } = useData();
 
+  const navigateTo = useNavigate();
   const [action, setAction] = useState('');
   const [actionStatus, setActionStatus] = useState('');
   const [selectedFolder, setSelectedFolder] = useState('');
@@ -45,11 +47,13 @@ function Actions() {
         const { name, id } = await postFolder.json();
         setFolders((prev) => ({ ...prev, [name]: id }));
         setActionStatus('Success!');
+        await sleep(0);
+        navigateTo(`/${parsedName}`);
       } catch (e) {
         setActionStatus(e.message);
       }
     },
-    [folders, setFolders],
+    [folders, setFolders, navigateTo],
   );
 
   const handleSelectedFolder = (event) => {
