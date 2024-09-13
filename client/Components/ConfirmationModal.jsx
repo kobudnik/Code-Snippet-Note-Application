@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useData } from '../Providers/DataProvider';
 
 function ConfirmationModal({ setShow, deleteName, handleDeleteFolder }) {
   const { folders } = useData();
+  const modalRef = useRef(null);
 
   const handleDelete = () => {
     handleDeleteFolder(folders[deleteName]);
@@ -14,8 +15,26 @@ function ConfirmationModal({ setShow, deleteName, handleDeleteFolder }) {
     setShow(false);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleDelete();
+    }
+  };
+
+  useEffect(() => {
+    if (modalRef.current) {
+      modalRef.current.focus();
+    }
+  });
+
   return (
-    <div className='flex items-center justify-center fixed top-[40%] left-[35%] z-[10000] '>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      ref={modalRef}
+      className='flex items-center justify-center fixed top-[40%] left-[35%] z-[10000]'
+      onKeyDown={handleKeyDown}
+      tabIndex={-1} // Ensure the container is focusable for keydown to work (div normally dont focus)
+    >
       <div className='bg-white rounded-md shadow-md p-6 text-center flex flex-col items-center justify-center'>
         <p className='p-5'>
           <span className='text-red-500 text-2xl relative top-1'>&#x26A0;</span>{' '}
