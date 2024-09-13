@@ -6,7 +6,7 @@
     "client": "NODE_ENV=development webpack serve --open",
     "compose:dev": "docker-compose -f docker-compose.dev.yml up -d",
     "dev": "npm run compose:dev & npm run client & npm run server",
-    "server": "nodemon server/server.js",
+    "server": "NODE_ENV=development nodemon server/server.js",
     "format": "prettier --write ."
   },
   "devDependencies": {

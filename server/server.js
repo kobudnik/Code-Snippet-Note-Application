@@ -26,8 +26,17 @@ app.use(cors());
 // });
 
 const redisClient = createClient({
-  url: `redis://${process.env.REDIS_CLIENT || 'localhost'}:6379`,
+  url: `redis://${
+    process.env.NODE_ENV === 'development'
+      ? 'localhost'
+      : process.env.REDIS_HOST || 'redis'
+  }:6379`,
 });
+
+// this always works in dev
+// const redisClient = createClient({
+//   url: `redis://localhost:6379`,
+// });
 redisClient.on('connect', function (err) {
   console.log('Connected to redis successfully');
 });

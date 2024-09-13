@@ -5,7 +5,7 @@ services:
     container_name: snip_elephant
     environment:
       PG_URI: ${PG_URI}
-      REDIS_CLIENT: ${REDIS_CLIENT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - '9090:3000'
     depends_on:

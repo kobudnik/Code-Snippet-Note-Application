@@ -12,13 +12,13 @@ function Login() {
   const { username, setUsername, isAuthenticated, setAuthenticated } =
     useUsername();
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username }),
-  };
-
   useEffect(() => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username }),
+    };
+
     if (isAuthenticated && username) {
       navigate('/home');
     } else if (username) {
@@ -34,7 +34,7 @@ function Login() {
           console.log(e);
         });
     }
-  }, [isAuthenticated, username]);
+  }, [isAuthenticated, username, navigate, setAuthenticated]);
 
   const handleUsernameChange = (e) => {
     setUsernameInput(e.target.value);
@@ -65,9 +65,10 @@ function Login() {
       }
       const { verifiedUser } = await post.json();
       setUsername(verifiedUser);
+      // eslint-disable-next-line no-undef
       localStorage.setItem('username', verifiedUser);
       setAuthenticated(true);
-    } catch (e) {
+    } catch (err) {
       setError(true);
     }
   };
